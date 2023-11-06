@@ -12,4 +12,12 @@ public class PetController: ControllerBase {
 
         return Ok(pets);
     }
+
+    [HttpPost]
+    public IActionResult PostPet([FromBody] Pet newPet) {
+
+        newPet.Id = pets.Count + 1;
+        pets.Add(newPet);
+        return Created("", newPet);
+    }
 }
