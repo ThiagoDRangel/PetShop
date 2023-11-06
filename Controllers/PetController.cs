@@ -20,4 +20,19 @@ public class PetController: ControllerBase {
         pets.Add(newPet);
         return Created("", newPet);
     }
+
+    [HttpPut("{PetId}")]
+    public IActionResult PutPet(int PetId, [FromBody] Pet pet) {
+
+        Pet findPet = pets.Find(pet => pet.Id == PetId)!;
+        if (findPet == null) {
+            return NotFound(new { message = "Pet not found" });
+        }
+        else {
+            findPet.Name = pet.Name;
+            findPet.Breed = pet.Breed;
+            findPet.Age = pet.Age;
+            return Ok(findPet);
+        }
+    }
 }
