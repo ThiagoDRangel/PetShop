@@ -1,0 +1,40 @@
+# Arquivos de compilação e diretórios
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Pacotes NuGet 
+**/[Pp]ackages/*
+*.nupkg
+
+# Arquivos de configuração que podem conter senhas ou informações sensíveis
+appsettings.json
+appsettings.*.json
+
+# Pastas específicas do ambiente de desenvolvimento
+.vs/
+.vscode/
+
+# Ferramentas de cobertura de código e arquivos de análise estática
+coverage.[ch]tml
+coverage.[jx]ml
+*.opencover.xml
+ReSharper/
+*.resharper
+*_ReSharper.*
+*ReSharper*
+.Analyze
+_ReSharper*/
+ncrunch*
+karma.conf.js
+karma-*.conf.js
+
+# Arquivos de banco de dados SQL Server que podem ser gerados localmente
+*.mdf
+*.ldf
+
+# Pasta de cache do NuGet local
+.nuget/
