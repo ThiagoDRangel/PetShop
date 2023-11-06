@@ -35,4 +35,17 @@ public class PetController: ControllerBase {
             return Ok(findPet);
         }
     }
+
+    [HttpDelete("{PetId}")]
+    public IActionResult DeletePet(int PetId) {
+            
+            Pet findPet = pets.Find(pet => pet.Id == PetId)!;
+            if (findPet == null) {
+                return NotFound(new { message = "Pet not found" });
+            }
+            else {
+                pets.Remove(findPet);
+                return Ok(new { message = "Pet removed" });
+            }
+    }
 }
