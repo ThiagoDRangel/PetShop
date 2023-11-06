@@ -1,51 +1,51 @@
 namespace PetShop.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using PetShop.Model;
+using PetShop.Service;
 
 [ApiController]
 [Route("[controller]")]
 public class PetController: ControllerBase {
 
-    private static List<Pet> pets = new List<Pet>();
+    private IPetService _service; // dependency inversion
+
+    public PetController(IPetService service) {
+
+        _service = service; // dependency injection
+    }
+
     [HttpGet]
     public IActionResult GetPets() {
 
-        return Ok(pets);
+        return Ok(_service.GetPets());
     }
 
     [HttpPost]
     public IActionResult PostPet([FromBody] Pet newPet) {
 
-        newPet.Id = pets.Count + 1;
-        pets.Add(newPet);
-        return Created("", newPet);
+        return Created("", _service.AddPet(newPet));
     }
 
     [HttpPut("{PetId}")]
     public IActionResult PutPet(int PetId, [FromBody] Pet pet) {
 
-        Pet findPet = pets.Find(pet => pet.Id == PetId)!;
-        if (findPet == null) {
-            return NotFound(new { message = "Pet not found" });
+        try {
+            return Ok(_service.UpdatePet(PetId, pet));
         }
-        else {
-            findPet.Name = pet.Name;
-            findPet.Breed = pet.Breed;
-            findPet.Age = pet.Age;
-            return Ok(findPet);
+        catch(Exception error) {
+            return NotFound(new { message = error.Message });
         }
     }
 
     [HttpDelete("{PetId}")]
     public IActionResult DeletePet(int PetId) {
-            
-            Pet findPet = pets.Find(pet => pet.Id == PetId)!;
-            if (findPet == null) {
-                return NotFound(new { message = "Pet not found" });
-            }
-            else {
-                pets.Remove(findPet);
-                return Ok(new { message = "Pet removed" });
-            }
+        
+        try {
+            _service.DeletePet(PetId);
+            return NoContent();
+        }
+        catch(Exception error) {
+            return NotFound(new { message = error.Message });
+        }
     }
 }
